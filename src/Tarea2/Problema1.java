@@ -1,9 +1,10 @@
-package tarea3;
+package tarea2;
 
 public class Problema1 {
 
 	public static void main(String[] args) {
-		System.out.println("asdasd");
+		Thread object = new Thread(new Funcion("f(x)=g(x)*h(x)*c(x)"));
+		object.start();
 	}
 }
 
