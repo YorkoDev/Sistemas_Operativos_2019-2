@@ -1,30 +1,14 @@
 package tarea2;
 
 public class Nodo {
-	private Arbol arbol_izq;
-	private Arbol arbol_der;
+	public Arbol arbol_izq;
+	public Arbol arbol_der;
 	private char dato;
 
-	public void Nodo() {
+	public Nodo() {
 		this.arbol_der = null;
 		this.arbol_izq = null;
 		this.dato = ' ';
-	}
-
-	public Arbol getArbolIzq() {
-		return this.arbol_izq;
-	}
-
-	public void setArbolIzq(Arbol arbol_izq) {
-		this.arbol_izq = arbol_izq;
-	}
-
-	public Arbol getArbolDer() {
-		return this.arbol_der;
-	}
-
-	public void setArbolDer(Arbol arbol_der) {
-		this.arbol_der = arbol_der;
 	}
 
 	public char getDato() {
@@ -32,6 +16,6 @@ public class Nodo {
 	}
 
 	public void setDato(char dato) {
-		this.dato = this.dato;
+		this.dato = dato;
 	}
 }
