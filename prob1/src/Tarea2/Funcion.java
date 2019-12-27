@@ -4,25 +4,13 @@ import java.util.LinkedList;
 
 public class Funcion implements Runnable {
 
-	private Arbol arbolito;
+	public Arbol arbolito;
 
 	public Funcion(String funcion) {
-		Arbol arbolito = new Arbol();
+		this.arbolito = new Arbol();
+		funcion = reemplazando_f(funcion);
+		this.arbolito = this.ayuda_esta_funcion_la_hice_a_las_4am_y_entro_a_trabajar_a_las_9_30(funcion);
 
-		Nodo aux;
-		int pos;
-		String sub;
-		int[] arr;
-
-		String array[] = funcion.split("=");
-		String relevant = array[1];
-
-		this.pline(relevant);
-		
-		relevant = reemplazando_f(relevant);
-		arbolito = this.ayuda_esta_funcion_la_hice_a_las_4am_y_entro_a_trabajar_a_las_9_30(relevant);
-		this.pline("printeando");
-		arbolito.print();
 	}
 
 	public Arbol ayuda_esta_funcion_la_hice_a_las_4am_y_entro_a_trabajar_a_las_9_30(String funcion) {
@@ -35,10 +23,8 @@ public class Funcion implements Runnable {
 		while(arr[0] != -1 && arr[1] != -1) {
 			sub = funcion.substring(arr[0]+1,arr[1]);
 
-			this.pline("si soy sub "+sub);
 			bosque.add(ayuda_esta_funcion_la_hice_a_las_4am_y_entro_a_trabajar_a_las_9_30(sub));
 			funcion = funcion.substring(0,arr[0])+"#"+funcion.substring(arr[1]+1,funcion.length());
-			this.pline(sub);
 			arr = this.masAdentro(funcion);
 		}
 
@@ -70,8 +56,6 @@ public class Funcion implements Runnable {
 			}
 			else {
 				pos_izq = cuantosCharIzq(funcion,pos)+1; pos_der = cuantosCharDer(funcion,pos);
-				System.out.println(pos_izq + " " + pos_der);
-
 				nodo.arbol_izq = new Arbol();
 				nodo.arbol_izq.raiz.setDato(funcion.substring(pos_izq,pos));
 				nodo.arbol_der = new Arbol();
@@ -116,7 +100,6 @@ public class Funcion implements Runnable {
 			}
 			else {
 				pos_izq = cuantosCharIzq(funcion,pos)+1; pos_der = cuantosCharDer(funcion,pos);
-				System.out.println(pos_izq + " " + pos_der);
 
 				nodo.arbol_izq = new Arbol();
 				nodo.arbol_izq.raiz.setDato(funcion.substring(pos_izq,pos));
@@ -136,22 +119,24 @@ public class Funcion implements Runnable {
 		returne = bosque.get(0);
 		return returne;
 	}
- //fas(x)
+
 	public String reemplazando_f(String funcion) {
 		int i = 0;
 		int inicio, termino;
 		while(true){
-			if(funcion.charAt(i) != '+' && funcion.charAt(i) != '-' && funcion.charAt(i) != '*' && funcion.charAt(i) != '/' && funcion.charAt(i) != '1' && funcion.charAt(i) != '2' && funcion.charAt(i) != '3' && funcion.charAt(i) != '4' && funcion.charAt(i) != '5' && funcion.charAt(i) != '6' && funcion.charAt(i) != '7' && funcion.charAt(i) != '8' && funcion.charAt(i) != '9' && funcion.charAt(i) != '0' && funcion.charAt(i) != '(' && funcion.charAt(i) != ')'){
+			if(i < funcion.length() && funcion.charAt(i) != '+' && funcion.charAt(i) != 'x' && funcion.charAt(i) != '-' && funcion.charAt(i) != '*' && funcion.charAt(i) != '/' && funcion.charAt(i) != '1' && funcion.charAt(i) != '2' && funcion.charAt(i) != '3' && funcion.charAt(i) != '4' && funcion.charAt(i) != '5' && funcion.charAt(i) != '6' && funcion.charAt(i) != '7' && funcion.charAt(i) != '8' && funcion.charAt(i) != '9' && funcion.charAt(i) != '0' && funcion.charAt(i) != '(' && funcion.charAt(i) != ')'){
 				inicio = i;
-				while(funcion.charAt(i) != '+' && funcion.charAt(i) != '-' && funcion.charAt(i) != '*' && funcion.charAt(i) != '/' && funcion.charAt(i) != '1' && funcion.charAt(i) != '2' && funcion.charAt(i) != '3' && funcion.charAt(i) != '4' && funcion.charAt(i) != '6' && funcion.charAt(i) != '7' && funcion.charAt(i) != '8' && funcion.charAt(i) != '9' && funcion.charAt(i) != '0'){
+				while(i <= funcion.length()-1 && funcion.charAt(i) != '+' && funcion.charAt(i) != '-' && funcion.charAt(i) != '*' && funcion.charAt(i) != '/' && funcion.charAt(i) != '1' && funcion.charAt(i) != '2' && funcion.charAt(i) != '3' && funcion.charAt(i) != '4' && funcion.charAt(i) != '6' && funcion.charAt(i) != '7' && funcion.charAt(i) != '8' && funcion.charAt(i) != '9' && funcion.charAt(i) != '0'){
 					i++;
 				}
 				termino = i;
 				funcion = funcion.substring(0,inicio)+funcion.substring(inicio,termino-3)+funcion.substring(termino,funcion.length());
 				i = termino-3;
+				if(i == funcion.length()) break;
 			}
 			i++;
 			if(i == funcion.length()) break;
+
 			
 		}
 		return funcion;
@@ -221,6 +206,7 @@ public class Funcion implements Runnable {
 	}
 
 	public void pline(String line) {
+		
 		System.out.println(line);
 	}
 
