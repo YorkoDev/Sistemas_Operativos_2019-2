@@ -41,7 +41,6 @@ public class quick extends Thread
 	{
 		if (lower < upper) 
 		{
-			System.out.println(currentThread());
 			int part = miniordenar(arr, lower, upper);	
 			quick a = new quick(arr, lower, part-1);
 			quick b = new quick(arr, part+1, upper);
