@@ -46,7 +46,13 @@ public class quick extends Thread
 			quick b = new quick(arr, part+1, upper);
 			a.start();
 			b.start();
+			try{
+				a.join();
+			}
+			catch(InterruptedException ie)
+			{
+				Thread.currentThread().interrupt();
+			}
 		}
-
 	}
 }
