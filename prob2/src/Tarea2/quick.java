@@ -13,46 +13,50 @@ public class quick extends Thread
 		this.upper = upper;
 	}
 
-	public int miniordenar(int [] arr, int lower, int upper)
-	{
-		int pivote = arr[upper];
-		int min = lower-1;
-		for (int i = lower; i < upper ; i++) 
-		{
-			if (arr[i] < pivote) 
-			{
-				
-				min++;
-				int temp = arr[min];
-				arr[min] = arr[i];
-				arr[i] = temp;
-			}	
-		}
-		min++;
-		int temp = arr[min]; 
-        arr[min] = arr[upper]; 
-        arr[upper] = temp;
-
-        return min;
-
-	}
-
 	public void run()
 	{
-		if (lower < upper) 
+
+		int c = lower;
+		int k = upper;
+		int pivote = arr[(lower+upper)/2];
+		while(c<k)
 		{
-			int part = miniordenar(arr, lower, upper);	
-			quick a = new quick(arr, lower, part-1);
-			quick b = new quick(arr, part+1, upper);
-			a.start();
-			b.start();
-			try{
-				a.join();
-			}
-			catch(InterruptedException ie)
+
+			while(arr[k] < pivote) k--;
+			while(arr[c] > pivote) c++;
+		
+			if (c <= k)
 			{
-				Thread.currentThread().interrupt();
+				int temp = arr[c];
+				arr[c] = arr[k];
+				arr[k]= temp;
+				k--;
+				c++;
 			}
+			if (lower < k) 
+			{
+				quick a = new quick(arr, lower, k);
+				a.start();
+				/*try{
+					a.join();
+				}
+				catch(InterruptedException ie)
+				{
+					 Thread.currentThread().interrupt();
+				}*/		
+			}
+			if (c < upper) 
+			{
+				quick b = new quick(arr, c, upper);		
+				b.start();
+				/*try{
+					b.join();
+				}
+				catch(InterruptedException ie)
+				{
+					 Thread.currentThread().interrupt();
+				}*/
+			}	
 		}
 	}
 }
