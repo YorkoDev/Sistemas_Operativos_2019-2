@@ -6,6 +6,14 @@ public class Funcion implements Runnable {
 
 	public Arbol arbolito;
 
+	public void run() {
+		try {
+			System.out.println("Thread " + Thread.currentThread().getId() + " is running");
+		} catch (Exception e) {
+			System.out.println("Exception");
+		}
+	}
+
 	public Funcion(String funcion) {
 		this.arbolito = new Arbol();
 		funcion = reemplazando_f(funcion);
@@ -13,6 +21,18 @@ public class Funcion implements Runnable {
 
 	}
 
+	public int calculando(int x, Arbol ab) {
+		int valor = 0;
+		if(ab.arbol_izq != null) {
+			this.calculando(x, ab.arbol_izq);
+		}
+		if(ab.arbol_der != null) {
+			this.calculando(x, ab.arbol_der);
+		}
+		return x;
+	}
+
+	//-- Para parsear la función que me dieron si --
 	public Arbol ayuda_esta_funcion_la_hice_a_las_4am_y_entro_a_trabajar_a_las_9_30(String funcion) {
 		Arbol returne = new Arbol();
 		String sub;
@@ -197,16 +217,8 @@ public class Funcion implements Runnable {
 		return -1;
 	}
 
-	public void run() {
-		try {
-			System.out.println("Thread " + Thread.currentThread().getId() + " is running");
-		} catch (Exception e) {
-			System.out.println("Exception");
-		}
-	}
-
+	//-- Funciones para imprimir porque me daba lata escribir System.out.println() --
 	public void pline(String line) {
-		
 		System.out.println(line);
 	}
 
