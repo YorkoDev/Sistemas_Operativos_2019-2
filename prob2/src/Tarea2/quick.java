@@ -6,6 +6,14 @@ public class quick extends Thread
 	int [] arr;
 	int lower;
 	int upper;
+	
+/*
+	Funcion quck(int [] arr, int lower, int upper)
+
+	Input: Arreglo de enteros, lower: inicio del sub arreglo, upper: final del subarreglo
+	Descripcion: Constructor de la clase quick
+	No tiene output
+*/
 	public quick(int [] arr, int lower, int upper)
 	{
 		this.arr = arr;
@@ -13,6 +21,16 @@ public class quick extends Thread
 		this.upper = upper;
 	}
 
+/*
+	Funcion run()
+
+	No tiene input
+	Descripcion: Inicia la threat, toma el dato que se encuentra al centro del arreglo y lo utiliza como pivote
+	dejando asi, todos los datos mayores que el pivote a la derecha, y los menores a la izquierda. Una vez realiza esto
+	crea dos threats los cual vuelven a llamar a esta funcion, pero con el sub arreglo izquierdo y con el sub arreglo derecho.
+	Esto se realiza hasta que se encuentre un arreglo de largo 1.
+	No tiene output
+*/
 	public void run()
 	{
 
@@ -36,26 +54,12 @@ public class quick extends Thread
 			if (lower < k) 
 			{
 				quick a = new quick(arr, lower, k);
-				a.start();
-				/*try{
-					a.join();
-				}
-				catch(InterruptedException ie)
-				{
-					 Thread.currentThread().interrupt();
-				}*/		
+				a.start();		
 			}
 			if (c < upper) 
 			{
 				quick b = new quick(arr, c, upper);		
 				b.start();
-				/*try{
-					b.join();
-				}
-				catch(InterruptedException ie)
-				{
-					 Thread.currentThread().interrupt();
-				}*/
 			}	
 		}
 	}
