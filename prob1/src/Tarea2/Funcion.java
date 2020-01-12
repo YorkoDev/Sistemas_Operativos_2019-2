@@ -2,34 +2,15 @@ package tarea2;
 
 import java.util.LinkedList;
 
-public class Funcion implements Runnable {
+public class Funcion extends Thread {
 
 	public Arbol arbolito;
-
-	public void run() {
-		try {
-			System.out.println("Thread " + Thread.currentThread().getId() + " is running");
-		} catch (Exception e) {
-			System.out.println("Exception");
-		}
-	}
+	public int x;
 
 	public Funcion(String funcion) {
 		this.arbolito = new Arbol();
 		funcion = reemplazando_f(funcion);
 		this.arbolito = this.ayuda_esta_funcion_la_hice_a_las_4am_y_entro_a_trabajar_a_las_9_30(funcion);
-
-	}
-
-	public int calculando(int x, Arbol ab) {
-		int valor = 0;
-		if(ab.arbol_izq != null) {
-			this.calculando(x, ab.arbol_izq);
-		}
-		if(ab.arbol_der != null) {
-			this.calculando(x, ab.arbol_der);
-		}
-		return x;
 	}
 
 	//-- Para parsear la función que me dieron si --
@@ -51,7 +32,6 @@ public class Funcion implements Runnable {
 		pos = this.hayMultODiv(funcion);
 		while(pos != -1) {
 			Nodo nodo = new Nodo();
-
 			nodo.setDato(""+funcion.charAt(pos));
 			if(funcion.charAt(pos-1) == '#' && funcion.charAt(pos+1) == '#') {
 				pos_izq = pos-1; pos_der = pos+2;
@@ -76,6 +56,51 @@ public class Funcion implements Runnable {
 			}
 			else {
 				pos_izq = cuantosCharIzq(funcion,pos)+1; pos_der = cuantosCharDer(funcion,pos);
+				nodo.arbol_izq = new Arbol();
+				nodo.arbol_izq.raiz.setDato(funcion.substring(pos_izq,pos));
+				nodo.arbol_der = new Arbol();
+				nodo.arbol_der.raiz.setDato(funcion.substring(pos+1,pos_der));
+			}
+			Arbol aux = new Arbol();
+			aux.raiz = nodo;
+
+			funcion = funcion.substring(0,pos_izq)+"#"+funcion.substring(pos_der,funcion.length());
+
+			if(bosque.size() == 0){bosque.add(aux);}
+			else if(quienSoy(funcion,pos_izq) == bosque.size()){bosque.add(aux);}
+			else{bosque.add(quienSoy(funcion,pos_izq),aux);}
+			pos = this.hayMultODiv(funcion);
+
+		}
+
+		pos = this.hayAddOSus(funcion);
+		while(pos != -1) {
+			Nodo nodo = new Nodo();
+			nodo.setDato(""+funcion.charAt(pos));
+			if(funcion.charAt(pos-1) == '#' && funcion.charAt(pos+1) == '#') {
+				pos_izq = pos-1; pos_der = pos+2;
+				nodo.arbol_izq = bosque.get(quienSoy(funcion, pos-1));
+				nodo.arbol_der = bosque.get(quienSoy(funcion, pos));
+				bosque.remove(quienSoy(funcion, pos-1));
+				bosque.remove(quienSoy(funcion, pos+1)-1);
+			}
+			else if(funcion.charAt(pos-1) != '#' && funcion.charAt(pos+1) == '#') {
+				pos_der = pos+2; pos_izq = cuantosCharIzq(funcion,pos)+1;
+				nodo.arbol_izq = new Arbol();
+				nodo.arbol_izq.raiz.setDato(funcion.substring(pos_izq,pos));
+				nodo.arbol_der = bosque.get(quienSoy(funcion, pos));
+				bosque.remove(quienSoy(funcion, pos+1));
+			}
+			else if(funcion.charAt(pos-1) == '#' && funcion.charAt(pos+1) != '#') {
+				pos_izq = pos-1; pos_der = cuantosCharDer(funcion,pos);
+				nodo.arbol_der = new Arbol();
+				nodo.arbol_der.raiz.setDato(funcion.substring(pos+1,pos_der));
+				nodo.arbol_izq = bosque.get(quienSoy(funcion, pos-1));
+				bosque.remove(quienSoy(funcion, pos-1));
+			}
+			else {
+				pos_izq = cuantosCharIzq(funcion,pos)+1; pos_der = cuantosCharDer(funcion,pos);
+
 				nodo.arbol_izq = new Arbol();
 				nodo.arbol_izq.raiz.setDato(funcion.substring(pos_izq,pos));
 				nodo.arbol_der = new Arbol();
@@ -87,55 +112,9 @@ public class Funcion implements Runnable {
 
 			if(bosque.size() == 0){bosque.add(aux);}
 			else if(quienSoy(funcion,pos_izq) == bosque.size()){bosque.add(aux);}
-			else{bosque.add(quienSoy(funcion,pos_izq+1),aux);}
-			pos = this.hayMultODiv(funcion);
-		}
-
-
-		pos = this.hayAddOSus(funcion);
-		while(pos != -1) {
-			Nodo nodo = new Nodo();
-
-			nodo.setDato(""+funcion.charAt(pos));
-			if(funcion.charAt(pos-1) == '#' && funcion.charAt(pos+1) == '#') {
-				pos_izq = pos-1; pos_der = pos+2;
-				nodo.arbol_izq = bosque.get(quienSoy(funcion, pos-1));
-				nodo.arbol_der = bosque.get(quienSoy(funcion, pos));
-				bosque.remove(quienSoy(funcion, pos-1));
-				bosque.remove(quienSoy(funcion, pos+1)-1);
-			}
-			else if(funcion.charAt(pos-1) != '#' && funcion.charAt(pos+1) == '#') {
-				pos_der = pos+2; pos_izq = cuantosCharIzq(funcion,pos)+1;
-				nodo.arbol_izq = new Arbol();
-				nodo.arbol_izq.raiz.setDato(funcion.substring(pos_izq,pos));
-				nodo.arbol_der = bosque.get(quienSoy(funcion, pos));
-				bosque.remove(quienSoy(funcion, pos+1));
-			}
-			else if(funcion.charAt(pos-1) == '#' && funcion.charAt(pos+1) != '#') {
-				pos_izq = pos-1; pos_der = cuantosCharDer(funcion,pos);
-				nodo.arbol_der = new Arbol();
-				nodo.arbol_der.raiz.setDato(funcion.substring(pos+1,pos_der));
-				nodo.arbol_izq = bosque.get(quienSoy(funcion, pos-1));
-				bosque.remove(quienSoy(funcion, pos-1));
-			}
-			else {
-				pos_izq = cuantosCharIzq(funcion,pos)+1; pos_der = cuantosCharDer(funcion,pos);
-
-				nodo.arbol_izq = new Arbol();
-				nodo.arbol_izq.raiz.setDato(funcion.substring(pos_izq,pos));
-				nodo.arbol_der = new Arbol();
-				nodo.arbol_der.raiz.setDato(funcion.substring(pos+1,pos_der));
-			}
-			Arbol aux = new Arbol();
-			aux.raiz = nodo;
-			funcion = funcion.substring(0,pos_izq)+"#"+funcion.substring(pos_der,funcion.length());
-
-			if(bosque.size() == 0){bosque.add(aux);}
-			else if(quienSoy(funcion,pos_izq+1) == bosque.size()){bosque.add(aux);}
-			else{bosque.add(quienSoy(funcion,pos_izq+1),aux);}
+			else{bosque.add(quienSoy(funcion,pos_izq),aux);}
 			pos = this.hayAddOSus(funcion);
 		}
-
 		returne = bosque.get(0);
 		return returne;
 	}
