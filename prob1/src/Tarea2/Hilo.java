@@ -25,6 +25,17 @@ class Hilo extends Thread {
 		}
 	}
 
+
+	/*
+		Nombre  : calcular
+
+		Objetivo: dado un arbol de precedencia y un valor x me calcula el valor de una funcion 
+				  evaluado en x. 
+				  El valor lo calula recorreciendio el arbol en post orden hasta que llegue a un numero o funcion y 
+				  empieza a retonar y wiiiii resultado.
+	
+		Retorna : el resultado :D
+	*/
 	public int calculando(int x, Arbol ab) {
 		if(ab.raiz.arbol_izq == null && ab.raiz.arbol_der == null && ab.raiz.getDato().charAt(0) != 'x' && this.sereUnNumero(ab.raiz.getDato())) return Integer.parseInt(ab.raiz.getDato());
 		else if(ab.raiz.arbol_izq == null && ab.raiz.arbol_der == null && ab.raiz.getDato().charAt(0) == 'x' && ab.raiz.getDato().length() == 1) return x;
