@@ -51,16 +51,33 @@ public class quick extends Thread
 				k--;
 				c++;
 			}
+			quick a = new quick(arr, lower, k);
 			if (lower < k) 
 			{
-				quick a = new quick(arr, lower, k);
 				a.start();		
 			}
+			quick b = new quick(arr, c, upper);		
 			if (c < upper) 
 			{
-				quick b = new quick(arr, c, upper);		
 				b.start();
 			}	
+
+
+			try{
+				a.join();
+			}
+			catch(InterruptedException ie)
+			{
+				Thread.currentThread().interrupt();
+			}
+
+			try{
+				b.join();
+			}
+			catch(InterruptedException ie)
+			{
+				Thread.currentThread().interrupt();
+			}
 		}
 	}
 }
